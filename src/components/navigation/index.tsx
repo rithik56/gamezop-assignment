@@ -1,15 +1,25 @@
 'use client';
 
 // Navigation Component
+import React from 'react'
 import styles from './navigation.module.css'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { USERS_PAGE_ROUTE, NEWS_PAGE_ROUTE, TOP_USERS_PAGE_ROUTE } from '@/app/appRoutes';
 
-export default function Navigation() {
+interface Props {
+    toggleDrawer: () => void
+}
+
+export default function Navigation({ toggleDrawer }: Props) {
     const pathname = usePathname()
     return (
         <nav className={styles.nav}>
+            <div className={styles.menu_icon} onClick={toggleDrawer}>
+                <div className={styles.menu_div}></div>
+                <div className={styles.menu_div}></div>
+                <div className={styles.menu_div}></div>
+            </div>
             <div className={styles.header_container}>
                 <Link href={USERS_PAGE_ROUTE} className={`${pathname === USERS_PAGE_ROUTE ? styles.nav_item_selected : ''} ${styles.nav_item} ${styles.bx_1}`}>
                     <h4>
@@ -27,7 +37,6 @@ export default function Navigation() {
                     </h4>
                 </Link>
             </div>
-            {/* <div className={styles.empty_container}></div> */}
         </nav>
     )
 }
