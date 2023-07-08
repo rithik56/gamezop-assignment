@@ -54,7 +54,9 @@
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
-  transition: background 200ms, border 200ms;
+  transition:
+    background 200ms,
+    border 200ms;
 }
 
 .page_card__QV0Om span {
@@ -188,7 +190,7 @@
     );
     background-clip: padding-box;
     -webkit-backdrop-filter: blur(24px);
-            backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
   }
 
   .page_description__86bsR div {
@@ -231,4 +233,3 @@
     transform: rotate(0deg);
   }
 }
-
