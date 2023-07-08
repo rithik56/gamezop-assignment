@@ -114,11 +114,15 @@ a {
 
 body {
   font-family: 'Roboto', sans-serif;
-  letter-spacing: .1px;
+  letter-spacing: 0.1px;
 }
 
 a:-webkit-any-link {
   color: inherit;
   cursor: pointer;
   text-decoration: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
