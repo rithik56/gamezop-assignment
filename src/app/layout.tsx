@@ -1,21 +1,16 @@
-'use client'
-
-import React, { useState } from 'react'
-import Navigation from "@/components/navigation"
-import Drawer from "@/components/drawer"
+import React from 'react'
+import Header from './components/Header'
+import styles from './layout.module.css'
 import './globals.css'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false)
-  function toggleDrawer() {
-    setIsOpen(!isOpen)
-  }
   return (
     <html lang="en">
       <body>
-        <Navigation toggleDrawer={toggleDrawer} />
-        <Drawer isOpen={isOpen} />
-        {children}
+        <Header />
+        <main className={styles.main}>
+          {children}
+        </main>
       </body>
     </html>
   )

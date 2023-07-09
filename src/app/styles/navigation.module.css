@@ -1,0 +1,23 @@
+.nav_list {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.nav_item_selected {
+  font-weight: 600;
+}
+
+.nav_item {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  font-weight: 400;
+}
+
+.bx_1 {
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+}
