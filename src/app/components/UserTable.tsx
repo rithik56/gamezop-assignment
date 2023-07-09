@@ -1,6 +1,6 @@
 'use client'
 
-import styles from '../styles/usertable.module.css'
+import styles from '../styles/table.module.css'
 import { useState } from 'react'
 
 // user object type
@@ -137,58 +137,56 @@ export default function UserTable({ users }: Props) {
     }
 
     return (
-        <>
-            <table className={styles.table}>
-                <tbody>
-                    <tr className={styles.tr} key={0}>
-                        <th className={styles.th}>Name</th>
-                        <th className={styles.th}>Email</th>
-                        <th className={styles.th}>Blocked</th>
-                        <th className={styles.th}>Top User</th>
-                    </tr>
-                    {users.map((user) => {
-                        return (
-                            <tr className={styles.tr} key={user.id}>
-                                <td className={styles.td}>{user.name}</td>
-                                <td className={styles.td}>{user.email}</td>
-                                <td className={styles.td}>
-                                    <label className={styles.switch}>
-                                        <input
-                                            className={styles.switch_input}
-                                            type="checkbox"
-                                            checked={(blockedUsers && (blockedUsers.hasOwnProperty(user.id))) ? true : false}
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    blockUser(user.id)
-                                                }
-                                                else {
-                                                    unblockUser(user.id)
-                                                }
-                                            }}
-                                        />
-                                        <span className={styles.slider}></span>
-                                    </label>
-                                </td>
-                                <td className={styles.td}>
+        <table className={styles.table}>
+            <tbody>
+                <tr className={styles.tr} key={0}>
+                    <th className={styles.th}>Name</th>
+                    <th className={styles.th}>Email</th>
+                    <th className={styles.th}>Blocked</th>
+                    <th className={styles.th}>Top User</th>
+                </tr>
+                {users.map((user) => {
+                    return (
+                        <tr className={styles.tr} key={user.id}>
+                            <td className={styles.td}>{user.name}</td>
+                            <td className={styles.td}>{user.email}</td>
+                            <td className={styles.td}>
+                                <label className={styles.switch}>
                                     <input
-                                        type='checkbox'
-                                        className={styles.checkbox}
-                                        checked={(topUsers && topUsers.hasOwnProperty(user.id)) ? true : false}
+                                        className={styles.switch_input}
+                                        type="checkbox"
+                                        checked={(blockedUsers && (blockedUsers.hasOwnProperty(user.id))) ? true : false}
                                         onChange={(e) => {
                                             if (e.target.checked) {
-                                                addTopUser(user.id, user)
+                                                blockUser(user.id)
                                             }
                                             else {
-                                                removeTopUser(user.id)
+                                                unblockUser(user.id)
                                             }
                                         }}
                                     />
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-        </>
+                                    <span className={styles.slider}></span>
+                                </label>
+                            </td>
+                            <td className={styles.td}>
+                                <input
+                                    type='checkbox'
+                                    className={styles.checkbox}
+                                    checked={(topUsers && topUsers.hasOwnProperty(user.id)) ? true : false}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            addTopUser(user.id, user)
+                                        }
+                                        else {
+                                            removeTopUser(user.id)
+                                        }
+                                    }}
+                                />
+                            </td>
+                        </tr>
+                    )
+                })}
+            </tbody>
+        </table>
     )
 }
