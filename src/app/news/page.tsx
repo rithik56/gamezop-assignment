@@ -22,7 +22,7 @@ export default async function News() {
     return (
         <main className={styles.main}>
             {news.map((item: newsType) => {
-                return <NewsCard news={item} key={item.id} />
+                return <NewsCard news={item} />
             })}
         </main>
     )
