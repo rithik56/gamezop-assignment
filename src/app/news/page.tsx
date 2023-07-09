@@ -1,14 +1,12 @@
 import { FETCH_NEWS_ENDPOINT } from '../endpoints'
+import NewsCard from '../components/NewsCard'
+import styles from './news.module.css'
 
 type newsType = {
     userId: number,
     id: number,
     title: string,
     body: string
-}
-
-interface Props {
-    news: newsType[]
 }
 
 async function getData() {
@@ -21,11 +19,11 @@ async function getData() {
 
 export default async function News() {
     const news = await getData();
-    console.log(news)
     return (
-        <main>
-            <h1>Users</h1>
+        <main className={styles.main}>
+            {news.map((item: newsType) => {
+                return <NewsCard news={item} />
+            })}
         </main>
-
     )
 }
