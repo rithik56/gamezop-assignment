@@ -1,0 +1,9 @@
+.article {
+  width: 300px;
+  padding: 16px 16px 8px 16px;
+  box-shadow: 0 2px 20px rgb(0 0 0 / 20%);
+}
+
+.p {
+  margin: 8px 0px;
+}
