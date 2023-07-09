@@ -110,6 +110,7 @@ a {
 * {
   margin: 0;
   padding: 0;
+  font-weight: 400;
 }
 
 body {
@@ -125,4 +126,16 @@ a:-webkit-any-link {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
 }
