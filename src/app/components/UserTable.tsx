@@ -49,24 +49,83 @@ export default function UserTable({ users }: Props) {
         }
     })
 
+    const [blockedUsers, setBlockedUsers] = useState(() => {
+        // Fetching the blocked users from the local storage
+        let blockedUsersKey = localStorage.getItem('blocked_users')
+        // checking if blocked_users exists
+        if (blockedUsersKey) {
+            // returning the blocked_users map from local storage
+            const obj = JSON.parse(blockedUsersKey)
+            const newObj = {
+                ...obj
+            }
+            const currentTimestamp = Date.now()
+            for (const id in obj) {
+                if (currentTimestamp - obj[id] >= 300000) {
+                    delete newObj[id]
+                }
+            }
+            localStorage.setItem('blocked_users', JSON.stringify(newObj))
+            return newObj
+        }
+        else {
+            // returning null as blocked_users doesn't exist
+            return null
+        }
+    })
+
     function addTopUser(id: number) {
 
         if (topUsers) {
             // if top users array is present in local storage, then we are appending the value to top users array
-            localStorage.setItem('top_users', JSON.stringify([...topUsers, id]))
-            setTopUsers([...topUsers, id])
+            const newArr = [...topUsers, id]
+            localStorage.setItem('top_users', JSON.stringify(newArr))
+            setTopUsers(newArr)
         }
         else {
             // if top users array is not present in local storage, then we are setting the top users
-            localStorage.setItem('top_users', JSON.stringify([id]))
-            setTopUsers([id])
+            const newArr = [id]
+            localStorage.setItem('top_users', JSON.stringify(newArr))
+            setTopUsers(newArr)
         }
     }
 
     function removeTopUser(id: number) {
         // Filtered the array and return the array in which id is not present
-        localStorage.setItem('top_users', JSON.stringify(topUsers.filter((curr: number) => curr !== id)))
-        setTopUsers(topUsers.filter((curr: number) => curr !== id))
+        const newArr = topUsers.filter((curr: number) => curr !== id)
+        localStorage.setItem('top_users', JSON.stringify(newArr))
+        setTopUsers(newArr)
+    }
+
+    function blockUser(id: number) {
+
+        if (blockedUsers) {
+            // if blocked users map is present in local storage, then we are adding the new entry with key = id and value = current timestamp in the map
+            const newObj = {
+                ...blockedUsers,
+                [id]: Date.now()
+            }
+            localStorage.setItem('blocked_users', JSON.stringify(newObj))
+            setBlockedUsers(newObj)
+        }
+        else {
+            // if blocked users map is not present in local storage, then we are setting the blocked users map
+            const newObj = {
+                [id]: Date.now()
+            }
+            localStorage.setItem('blocked_users', JSON.stringify(newObj))
+            setBlockedUsers(newObj)
+        }
+    }
+
+    function unblockUser(id: number) {
+        // Delete the id 
+        const newObj = {
+            ...blockedUsers
+        };
+        delete newObj[id]
+        localStorage.setItem('blocked_users', JSON.stringify(newObj))
+        setBlockedUsers(newObj)
     }
 
     return (
@@ -76,7 +135,7 @@ export default function UserTable({ users }: Props) {
                     <tr className={styles.tr} key={0}>
                         <th className={styles.th}>Name</th>
                         <th className={styles.th}>Email</th>
-                        <th className={styles.th}>Status</th>
+                        <th className={styles.th}>Blocked</th>
                         <th className={styles.th}>Top User</th>
                     </tr>
                     {users.map((user) => {
@@ -86,7 +145,19 @@ export default function UserTable({ users }: Props) {
                                 <td className={styles.td}>{user.email}</td>
                                 <td className={styles.td}>
                                     <label className={styles.switch}>
-                                        <input className={styles.switch_input} type="checkbox" />
+                                        <input
+                                            className={styles.switch_input}
+                                            type="checkbox"
+                                            checked={(blockedUsers && (blockedUsers.hasOwnProperty(user.id))) ? true : false}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    blockUser(user.id)
+                                                }
+                                                else {
+                                                    unblockUser(user.id)
+                                                }
+                                            }}
+                                        />
                                         <span className={styles.slider}></span>
                                     </label>
                                 </td>
