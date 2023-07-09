@@ -40,7 +40,7 @@ export default function UserTable({ users }: Props) {
         let topUsersKey = localStorage.getItem('top_users')
         // checking if top_users exists
         if (topUsersKey) {
-            // returning the top_users array from local storage
+            // returning the top_users mao from local storage
             return JSON.parse(topUsersKey)
         }
         else {
@@ -74,33 +74,41 @@ export default function UserTable({ users }: Props) {
         }
     })
 
-    function addTopUser(id: number) {
+    function addTopUser(id: number, user: usersType) {
 
         if (topUsers) {
-            // if top users array is present in local storage, then we are appending the value to top users array
-            const newArr = [...topUsers, id]
-            localStorage.setItem('top_users', JSON.stringify(newArr))
-            setTopUsers(newArr)
+            // if top users map is present in local storage, then we are adding the new entry {id: user} in the map
+            const newObj = {
+                ...topUsers,
+                [id]: user
+            }
+            localStorage.setItem('top_users', JSON.stringify(newObj))
+            setTopUsers(newObj)
         }
         else {
-            // if top users array is not present in local storage, then we are setting the top users
-            const newArr = [id]
-            localStorage.setItem('top_users', JSON.stringify(newArr))
-            setTopUsers(newArr)
+            // if top users map is not present in local storage, then we are setting the top users map 
+            const newObj = {
+                [id]: user
+            }
+            localStorage.setItem('top_users', JSON.stringify(newObj))
+            setTopUsers(newObj)
         }
     }
 
     function removeTopUser(id: number) {
-        // Filtered the array and return the array in which id is not present
-        const newArr = topUsers.filter((curr: number) => curr !== id)
-        localStorage.setItem('top_users', JSON.stringify(newArr))
-        setTopUsers(newArr)
+        // Delete the id 
+        const newObj = {
+            ...topUsers
+        }
+        delete newObj[id]
+        localStorage.setItem('top_users', JSON.stringify(newObj))
+        setTopUsers(newObj)
     }
 
     function blockUser(id: number) {
 
         if (blockedUsers) {
-            // if blocked users map is present in local storage, then we are adding the new entry with key = id and value = current timestamp in the map
+            // if blocked users map is present in local storage, then we are adding the new entry {id: current timestamp} in the map
             const newObj = {
                 ...blockedUsers,
                 [id]: Date.now()
@@ -165,10 +173,10 @@ export default function UserTable({ users }: Props) {
                                     <input
                                         type='checkbox'
                                         className={styles.checkbox}
-                                        checked={(topUsers && topUsers.includes(user.id)) ? true : false}
+                                        checked={(topUsers && topUsers.hasOwnProperty(user.id)) ? true : false}
                                         onChange={(e) => {
                                             if (e.target.checked) {
-                                                addTopUser(user.id)
+                                                addTopUser(user.id, user)
                                             }
                                             else {
                                                 removeTopUser(user.id)
