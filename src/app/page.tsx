@@ -1,4 +1,4 @@
-'use-client'
+'use client'
 // Home Page
 
 export default function Home() {

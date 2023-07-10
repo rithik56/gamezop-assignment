@@ -1,5 +1,4 @@
 .table {
-  font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
@@ -11,8 +10,13 @@
   padding: 8px;
 }
 
+.header_row {
+  background-color: #5b9ad5;
+  color: white;
+}
+
 .tr:nth-child(even) {
-  background-color: #dddddd;
+  background-color: #ddebf7;
 }
 
 .switch {
@@ -68,7 +72,7 @@ input:checked + .slider:before {
 }
 
 .checkbox {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   accent-color: #193868;
 }

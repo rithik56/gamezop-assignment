@@ -1,9 +1,10 @@
 // Top Users Page
+import TopUsersTable from "../components/TopUsersTable"
 
 export default function TopUsers() {
   return (
     <main>
-      <h1>Top Users</h1>
+      <TopUsersTable />
     </main>
   )
 }
