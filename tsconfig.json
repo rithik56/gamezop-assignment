@@ -31,5 +31,6 @@
     "src/app/components/Navigation.jsx",
     "src/app/components/Header.jsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "typeRoots": ["./types"]
 }

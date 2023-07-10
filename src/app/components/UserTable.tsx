@@ -5,29 +5,6 @@ import { useState, useEffect } from 'react'
 import SearchBar from './SearchBar'
 
 // user object type
-type usersType = {
-    id: number,
-    name: string,
-    username: string,
-    email: string,
-    address: {
-        street: string,
-        suite: string,
-        city: string,
-        zipcode: string,
-        geo: {
-            lat: string,
-            lng: string
-        }
-    },
-    phone: string,
-    website: string,
-    company: {
-        name: string,
-        catchPhrase: string,
-        bs: string
-    }
-}
 
 // props interface
 interface Props {
@@ -181,13 +158,16 @@ export default function UserTable({ users }: Props) {
         <>
             {/* Checking if filteredUsers exists */}
             {filteredUsers && <>
-                {/* Passing the values of category and query as props to searchbar component along with their respective updateHandler functions */}
-                <SearchBar
-                    category={category}
-                    query={query}
-                    updateCategoryHandler={(newCategory) => setCategory(newCategory)}
-                    updateQueryHandler={(newQuery) => setQuery(newQuery)}
-                />
+                <div className={`display-flex`}>
+                    {/* Passing the values of category and query as props to searchbar component along with their respective updateHandler functions */}
+                    <SearchBar
+                        category={category}
+                        query={query}
+                        updateCategoryHandler={(newCategory) => setCategory(newCategory)}
+                        updateQueryHandler={(newQuery) => setQuery(newQuery)}
+                        filteredUsers={filteredUsers}
+                    />
+                </div>
                 <table className={styles.table}>
                     <tbody>
                         <tr className={`${styles.tr} ${styles.header_row}`} key={0}>
