@@ -35,7 +35,7 @@ export default function TopUsersTable() {
     return (
         <table className={styles.table}>
             <tbody>
-                <tr className={styles.tr} key={0}>
+                <tr className={`${styles.tr} ${styles.header_row}`} key={0}>
                     <th className={styles.th}>Name</th>
                     <th className={styles.th}>Email</th>
                 </tr>
