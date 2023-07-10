@@ -1,0 +1,16 @@
+.search_results {
+  background-color: white;
+  padding: 16px 0px;
+  margin-top: 10px;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
+}
+
+.search_results_heading {
+  padding: 8px 8px 8px 16px;
+}
+
+.search_results_heading:hover {
+  cursor: pointer;
+  background-color: #8080801a;
+}

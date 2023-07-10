@@ -1,13 +1,15 @@
 import styles from '../styles/searchbar.module.css'
+import SearchResults from './SearchResults'
 
 interface Props {
-    category: string,
+    category: "name" | "email",
     query: string,
     updateCategoryHandler: (category: "name" | "email") => void,
-    updateQueryHandler: (query: string) => void
+    updateQueryHandler: (query: string) => void,
+    filteredUsers: usersType[] | null
 }
 
-export default function SearchBar({ category, query, updateCategoryHandler, updateQueryHandler }: Props) {
+export default function SearchBar({ category, query, updateCategoryHandler, updateQueryHandler, filteredUsers }: Props) {
     return (
         <div className={styles.searchbar_container}>
             <select className={styles.select} value={category} onChange={(e) => {
@@ -19,13 +21,16 @@ export default function SearchBar({ category, query, updateCategoryHandler, upda
                 <option value={'name'}>Name</option>
                 <option value={'email'}>Email</option>
             </select>
-            <input
-                type="text"
-                className={`${styles.searchbar} ${styles.icon_rtl}`}
-                placeholder={category === 'name' ? 'Search Name...' : 'Search Email...'}
-                value={query}
-                onChange={(e) => updateQueryHandler(e.target.value)}
-            />
+            <div className={styles.search_results_container}>
+                <input
+                    type="text"
+                    className={`${styles.searchbar} ${styles.icon_rtl}`}
+                    placeholder={category === 'name' ? 'Search Name...' : 'Search Email...'}
+                    value={query}
+                    onChange={(e) => updateQueryHandler(e.target.value)}
+                />
+                <SearchResults filteredUsers={filteredUsers} category={category} />
+            </div>
         </div>
     )
 }
