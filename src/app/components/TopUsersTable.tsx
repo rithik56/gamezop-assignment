@@ -10,10 +10,13 @@ export default function TopUsersTable() {
     if (topUsersKey) {
         users = Object.values(JSON.parse(topUsersKey))
     }
-    const [filteredUsers, setFilteredUsers] = useState<usersType[] | null>(users)
+    const [filteredUsers, setFilteredUsers] = useState<usersType[] | null>(null)
     const [category, setCategory] = useState<'name' | 'email'>('name')
     const [query, setQuery] = useState('')
-    function filterDataHandler() {
+    function filterDataHandler(category: "name" | "email", query: string) {
+
+        let newData: usersType[] | null
+
         // If users is null then we return
         if (users === null) {
             return
@@ -21,28 +24,27 @@ export default function TopUsersTable() {
 
         // If query is empty, then we return all the users
         if (query === '') {
-            setFilteredUsers(users)
+            newData = null
         }
 
         // Filter the data according to query and category
         else {
-            const newData = users.filter((user: usersType) => {
+            newData = users.filter((user: usersType) => {
                 return user[category].toLowerCase().includes(query.toLowerCase())
             })
-            setFilteredUsers(newData)
         }
+
+        setFilteredUsers(newData)
+        setCategory(category)
+        setQuery(query)
     }
-    useEffect(() => {
-        filterDataHandler()
-    }, [query, category])
     return (
         <>
             <>
                 <SearchBar
                     category={category}
                     query={query}
-                    updateCategoryHandler={(newCategory) => setCategory(newCategory)}
-                    updateQueryHandler={(newQuery) => setQuery(newQuery)}
+                    filterUserHandler={(category, query) => filterDataHandler(category, query)}
                     filteredUsers={filteredUsers}
                 />
                 <table className={styles.table}>
@@ -51,7 +53,7 @@ export default function TopUsersTable() {
                             <th className={styles.th}>Name</th>
                             <th className={styles.th}>Email</th>
                         </tr>
-                        {filteredUsers && filteredUsers.map((user: usersType) => {
+                        {users && users.map((user: usersType) => {
                             return (
                                 <tr className={styles.tr} key={user.id}>
                                     <td className={styles.td}>{user.name}</td>
