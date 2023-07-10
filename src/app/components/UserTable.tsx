@@ -1,7 +1,8 @@
 'use client'
 
 import styles from '../styles/table.module.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import SearchBar from './SearchBar'
 
 // user object type
 type usersType = {
@@ -30,7 +31,7 @@ type usersType = {
 
 // props interface
 interface Props {
-    users: usersType[]
+    users: usersType[] | null
 }
 
 export default function UserTable({ users }: Props) {
@@ -73,6 +74,14 @@ export default function UserTable({ users }: Props) {
             return null
         }
     })
+
+    const [filteredUsers, setFilteredUsers] = useState<usersType[] | null>(null)
+
+    // Initial state for category in dropdown 
+    const [category, setCategory] = useState<'name' | 'email'>('name')
+
+    // Initial state for query 
+    const [query, setQuery] = useState('')
 
     function addTopUser(id: number, user: usersType) {
 
@@ -136,57 +145,101 @@ export default function UserTable({ users }: Props) {
         setBlockedUsers(newObj)
     }
 
+    function filterDataHandler() {
+
+        // If users is null then we return
+        if (users === null) {
+            return
+        }
+
+        // If query is empty, then we return all the users
+        if (query === '') {
+            setFilteredUsers(users)
+        }
+
+        // Filter the data according to query and category
+        else {
+            const newData = users.filter((user: usersType) => {
+                return user[category].toLowerCase().includes(query.toLowerCase())
+            })
+            setFilteredUsers(newData)
+        }
+
+    }
+
+    // Set initial value of filteredUsers as users
+    useEffect(() => {
+        setFilteredUsers(users)
+    }, [users])
+
+    // Call filter data handler when query or category changes
+    useEffect(() => {
+        filterDataHandler()
+    }, [query, category])
+
     return (
-        <table className={styles.table}>
-            <tbody>
-                <tr className={styles.tr} key={0}>
-                    <th className={styles.th}>Name</th>
-                    <th className={styles.th}>Email</th>
-                    <th className={styles.th}>Blocked</th>
-                    <th className={styles.th}>Top User</th>
-                </tr>
-                {users.map((user) => {
-                    return (
-                        <tr className={styles.tr} key={user.id}>
-                            <td className={styles.td}>{user.name}</td>
-                            <td className={styles.td}>{user.email}</td>
-                            <td className={styles.td}>
-                                <label className={styles.switch}>
-                                    <input
-                                        className={styles.switch_input}
-                                        type="checkbox"
-                                        checked={(blockedUsers && (blockedUsers.hasOwnProperty(user.id))) ? true : false}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                blockUser(user.id)
-                                            }
-                                            else {
-                                                unblockUser(user.id)
-                                            }
-                                        }}
-                                    />
-                                    <span className={styles.slider}></span>
-                                </label>
-                            </td>
-                            <td className={styles.td}>
-                                <input
-                                    type='checkbox'
-                                    className={styles.checkbox}
-                                    checked={(topUsers && topUsers.hasOwnProperty(user.id)) ? true : false}
-                                    onChange={(e) => {
-                                        if (e.target.checked) {
-                                            addTopUser(user.id, user)
-                                        }
-                                        else {
-                                            removeTopUser(user.id)
-                                        }
-                                    }}
-                                />
-                            </td>
+        <>
+            {/* Checking if filteredUsers exists */}
+            {filteredUsers && <>
+                {/* Passing the values of category and query as props to searchbar component along with their respective updateHandler functions */}
+                <SearchBar
+                    category={category}
+                    query={query}
+                    updateCategoryHandler={(newCategory) => setCategory(newCategory)}
+                    updateQueryHandler={(newQuery) => setQuery(newQuery)}
+                />
+                <table className={styles.table}>
+                    <tbody>
+                        <tr className={`${styles.tr} ${styles.header_row}`} key={0}>
+                            <th className={styles.th}>Name</th>
+                            <th className={styles.th}>Email</th>
+                            <th className={styles.th}>Blocked</th>
+                            <th className={styles.th}>Top User</th>
                         </tr>
-                    )
-                })}
-            </tbody>
-        </table>
+                        {filteredUsers.map((user) => {
+                            return (
+                                <tr className={styles.tr} key={user.id}>
+                                    <td className={styles.td}>{user.name}</td>
+                                    <td className={styles.td}>{user.email}</td>
+                                    <td className={styles.td}>
+                                        <label className={styles.switch}>
+                                            <input
+                                                className={styles.switch_input}
+                                                type="checkbox"
+                                                checked={(blockedUsers && (blockedUsers.hasOwnProperty(user.id))) ? true : false}
+                                                onChange={(e) => {
+                                                    if (e.target.checked) {
+                                                        blockUser(user.id)
+                                                    }
+                                                    else {
+                                                        unblockUser(user.id)
+                                                    }
+                                                }}
+                                            />
+                                            <span className={styles.slider}></span>
+                                        </label>
+                                    </td>
+                                    <td className={styles.td}>
+                                        <input
+                                            type='checkbox'
+                                            className={styles.checkbox}
+                                            checked={(topUsers && topUsers.hasOwnProperty(user.id)) ? true : false}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    addTopUser(user.id, user)
+                                                }
+                                                else {
+                                                    removeTopUser(user.id)
+                                                }
+                                            }}
+                                        />
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
+            </>}
+        </>
     )
 }

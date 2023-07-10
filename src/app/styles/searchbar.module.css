@@ -1,0 +1,25 @@
+.searchbar_container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.searchbar {
+  width: 100%;
+  height: 20px;
+  padding: 8px;
+  border: 1px solid black;
+}
+
+.select {
+  width: 10%;
+  margin-right: 4px;
+  background-color: #5b9ad5;
+  color: white;
+  border: none;
+}
+
+.icon_rtl {
+  padding-left: 40px;
+  background: url('../../../public/search.svg') no-repeat 1%;
+  background-size: 20px;
+}
