@@ -1,5 +1,6 @@
 import { FETCH_USERS_ENDPOINT } from "../endpoints"
 import UserTable from "../components/UserTable"
+import styles from './user.module.css'
 
 async function getData() {
   const res = await fetch(FETCH_USERS_ENDPOINT, { cache: 'no-store' })
@@ -12,7 +13,7 @@ async function getData() {
 export default async function Users() {
   const users = await getData()
   return (
-    <main>
+    <main className={styles.main}>
       <UserTable users={users} />
     </main>
   )

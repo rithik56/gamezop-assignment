@@ -4,30 +4,6 @@ import styles from '../styles/table.module.css'
 import SearchBar from './SearchBar'
 import { useState, useEffect } from 'react'
 
-type usersType = {
-    id: number,
-    name: string,
-    username: string,
-    email: string,
-    address: {
-        street: string,
-        suite: string,
-        city: string,
-        zipcode: string,
-        geo: {
-            lat: string,
-            lng: string
-        }
-    },
-    phone: string,
-    website: string,
-    company: {
-        name: string,
-        catchPhrase: string,
-        bs: string
-    }
-}
-
 export default function TopUsersTable() {
     const topUsersKey = localStorage.getItem('top_users')
     let users: usersType[] | null = null
@@ -67,6 +43,7 @@ export default function TopUsersTable() {
                     query={query}
                     updateCategoryHandler={(newCategory) => setCategory(newCategory)}
                     updateQueryHandler={(newQuery) => setQuery(newQuery)}
+                    filteredUsers={filteredUsers}
                 />
                 <table className={styles.table}>
                     <tbody>
