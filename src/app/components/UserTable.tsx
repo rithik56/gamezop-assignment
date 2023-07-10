@@ -1,8 +1,9 @@
 'use client'
 
 import styles from '../styles/table.module.css'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import SearchBar from './SearchBar'
+import UserDetails from './UserDetails'
 
 // user object type
 
@@ -59,6 +60,12 @@ export default function UserTable({ users }: Props) {
 
     // Initial state for query 
     const [query, setQuery] = useState('')
+
+    // Show User Details state
+    const [showUserDetails, setShowUserDetails] = useState<{ showUser: boolean, userDetails: null | usersType }>({
+        showUser: false,
+        userDetails: null
+    })
 
     function addTopUser(id: number, user: usersType) {
 
@@ -122,7 +129,9 @@ export default function UserTable({ users }: Props) {
         setBlockedUsers(newObj)
     }
 
-    function filterDataHandler() {
+    function filterDataHandler(category: "name" | "email", query: string) {
+
+        let newData: usersType[] | null
 
         // If users is null then we return
         if (users === null) {
@@ -131,44 +140,42 @@ export default function UserTable({ users }: Props) {
 
         // If query is empty, then we return all the users
         if (query === '') {
-            setFilteredUsers(users)
+            newData = null
         }
 
         // Filter the data according to query and category
         else {
-            const newData = users.filter((user: usersType) => {
+            newData = users.filter((user: usersType) => {
                 return user[category].toLowerCase().includes(query.toLowerCase())
             })
-            setFilteredUsers(newData)
         }
 
+        setFilteredUsers(newData)
+        setCategory(category)
+        setQuery(query)
     }
-
-    // Set initial value of filteredUsers as users
-    useEffect(() => {
-        setFilteredUsers(users)
-    }, [users])
-
-    // Call filter data handler when query or category changes
-    useEffect(() => {
-        filterDataHandler()
-    }, [query, category])
 
     return (
         <>
             {/* Checking if filteredUsers exists */}
-            {filteredUsers && <>
+            {users && <>
                 <div className={`display-flex`}>
                     {/* Passing the values of category and query as props to searchbar component along with their respective updateHandler functions */}
                     <SearchBar
                         category={category}
                         query={query}
-                        updateCategoryHandler={(newCategory) => setCategory(newCategory)}
-                        updateQueryHandler={(newQuery) => setQuery(newQuery)}
+                        filterUserHandler={(category, query) => filterDataHandler(category, query)}
                         filteredUsers={filteredUsers}
+                        updateShowUserHandler={(showUser: boolean, userDetails: usersType) => {
+                            setShowUserDetails({
+                                showUser: showUser,
+                                userDetails: userDetails
+                            })
+                            setQuery('')
+                        }}
                     />
                 </div>
-                <table className={styles.table}>
+                {!showUserDetails.showUser ? <table className={styles.table}>
                     <tbody>
                         <tr className={`${styles.tr} ${styles.header_row}`} key={0}>
                             <th className={styles.th}>Name</th>
@@ -176,7 +183,7 @@ export default function UserTable({ users }: Props) {
                             <th className={styles.th}>Blocked</th>
                             <th className={styles.th}>Top User</th>
                         </tr>
-                        {filteredUsers.map((user) => {
+                        {users.map((user) => {
                             return (
                                 <tr className={styles.tr} key={user.id}>
                                     <td className={styles.td}>{user.name}</td>
@@ -218,7 +225,7 @@ export default function UserTable({ users }: Props) {
                             )
                         })}
                     </tbody>
-                </table>
+                </table> : showUserDetails.userDetails && <UserDetails user={showUserDetails.userDetails} />}
             </>}
         </>
     )
