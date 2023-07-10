@@ -1,9 +1,15 @@
 .search_results {
+  opacity: 0;
   background-color: white;
   padding: 16px 0px;
   margin-top: 10px;
   border-radius: 16px;
   box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
+  transition: opacity 0.1s ease-out;
+}
+
+.search_results_active {
+  opacity: 1;
 }
 
 .search_results_heading {

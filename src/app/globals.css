@@ -139,3 +139,7 @@ a:-webkit-any-link {
 .justify-content-center {
   justify-content: center;
 }
+
+.ml-2 {
+  margin-left: 8px;
+}
