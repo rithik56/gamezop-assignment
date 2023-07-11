@@ -225,7 +225,16 @@ export default function UserTable({ users }: Props) {
                             )
                         })}
                     </tbody>
-                </table> : showUserDetails.userDetails && <UserDetails user={showUserDetails.userDetails} />}
+                </table> : showUserDetails.userDetails &&
+                <UserDetails
+                    user={showUserDetails.userDetails}
+                    updateShowUserDetailsHandler={() => {
+                        setShowUserDetails({
+                            showUser: false,
+                            userDetails: null
+                        })
+                    }}
+                />}
             </>}
         </>
     )
