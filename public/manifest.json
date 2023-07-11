@@ -2,6 +2,7 @@
   "name": "Gamezop",
   "short_name": "Gamezop",
   "start_url": "/users",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#90cdf4",
   "theme_color": "#90cdf4",
