@@ -2,16 +2,12 @@
 
 import styles from '../styles/table.module.css'
 import SearchBar from './SearchBar'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import UserDetails from './UserDetails'
 
 export default function TopUsersTable() {
-    if (typeof window == 'undefined') return null
-    const topUsersKey = localStorage.getItem('top_users')
-    let users: usersType[] | null = null
-    if (topUsersKey) {
-        users = Object.values(JSON.parse(topUsersKey))
-    }
+
+    const [topUsers, setTopUsers] = useState<usersType[] | null>(null)
 
     const [filteredUsers, setFilteredUsers] = useState<usersType[] | null>(null)
 
@@ -29,7 +25,7 @@ export default function TopUsersTable() {
         let newData: usersType[] | null
 
         // If users is null then we return
-        if (users === null) {
+        if (topUsers === null) {
             return
         }
 
@@ -40,7 +36,7 @@ export default function TopUsersTable() {
 
         // Filter the data according to query and category
         else {
-            newData = users.filter((user: usersType) => {
+            newData = topUsers.filter((user: usersType) => {
                 return user[category].toLowerCase().includes(query.toLowerCase())
             })
         }
@@ -49,6 +45,14 @@ export default function TopUsersTable() {
         setCategory(category)
         setQuery(query)
     }
+    useEffect(() => {
+        let topUsersKey = localStorage.getItem('top_users')
+        let users: usersType[] | null = null
+        if (topUsersKey) {
+            users = Object.values(JSON.parse(topUsersKey))
+        }
+        setTopUsers(users)
+    }, [])
     return (
         <>
             <SearchBar
@@ -70,7 +74,7 @@ export default function TopUsersTable() {
                         <th className={styles.th}>Name</th>
                         <th className={styles.th}>Email</th>
                     </tr>
-                    {users && users.map((user: usersType) => {
+                    {topUsers && topUsers.map((user: usersType) => {
                         return (
                             <tr className={styles.tr} key={user.id}>
                                 <td className={styles.td}>{user.name}</td>

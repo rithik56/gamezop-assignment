@@ -1,7 +1,7 @@
 'use client'
 
 import styles from '../styles/table.module.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SearchBar from './SearchBar'
 import UserDetails from './UserDetails'
 
@@ -14,52 +14,9 @@ interface Props {
 
 export default function UserTable({ users }: Props) {
 
-    const [topUsers, setTopUsers] = useState(() => {
+    const [topUsers, setTopUsers] = useState<{ [id: number]: usersType } | null>(null)
 
-        if (typeof window == 'undefined') return null
-
-        // Fetching the top users from the local storage
-        let topUsersKey = localStorage.getItem('top_users')
-
-        // checking if top_users exists
-        if (topUsersKey) {
-            // returning the top_users mao from local storage
-            return JSON.parse(topUsersKey)
-        }
-        else {
-            // returning null as top_users doesn't exist
-            return null
-        }
-    })
-
-    const [blockedUsers, setBlockedUsers] = useState(() => {
-
-        if (typeof window == 'undefined') return null
-
-        // Fetching the blocked users from the local storage
-        let blockedUsersKey = localStorage.getItem('blocked_users')
-
-        // checking if blocked_users exists
-        if (blockedUsersKey) {
-            // returning the blocked_users map from local storage
-            const obj = JSON.parse(blockedUsersKey)
-            const newObj = {
-                ...obj
-            }
-            const currentTimestamp = Date.now()
-            for (const id in obj) {
-                if (currentTimestamp - obj[id] >= 300000) {
-                    delete newObj[id]
-                }
-            }
-            localStorage.setItem('blocked_users', JSON.stringify(newObj))
-            return newObj
-        }
-        else {
-            // returning null as blocked_users doesn't exist
-            return null
-        }
-    })
+    const [blockedUsers, setBlockedUsers] = useState<{ [id: number]: number } | null>(null)
 
     const [filteredUsers, setFilteredUsers] = useState<usersType[] | null>(null)
 
@@ -88,7 +45,7 @@ export default function UserTable({ users }: Props) {
         }
         else {
             // if top users map is not present in local storage, then we are setting the top users map 
-            const newObj = {
+            const newObj: {} = {
                 [id]: user
             }
             localStorage.setItem('top_users', JSON.stringify(newObj))
@@ -162,6 +119,43 @@ export default function UserTable({ users }: Props) {
         setCategory(category)
         setQuery(query)
     }
+
+    useEffect(() => {
+
+        let topUsersKey: string | null = localStorage.getItem('top_users')
+        let topUsers: { [id: number]: usersType } | null = null
+
+        // checking if top_users exists
+        if (topUsersKey) {
+            // returning the top_users map from local storage
+            topUsers = JSON.parse(topUsersKey)
+        }
+
+        // Fetching the blocked users from the local storage
+        let blockedUsersKey = localStorage.getItem('blocked_users')
+        let blockedUsers: { [id: number]: number } | null = null
+
+        // checking if blocked_users exists
+        if (blockedUsersKey) {
+            // returning the blocked_users map from local storage
+            const obj = JSON.parse(blockedUsersKey)
+            const newObj = {
+                ...obj
+            }
+            const currentTimestamp = Date.now()
+            for (const id in obj) {
+                if (currentTimestamp - obj[id] >= 300000) {
+                    delete newObj[id]
+                }
+            }
+            localStorage.setItem('blocked_users', JSON.stringify(newObj))
+            blockedUsers = newObj
+        }
+
+        setTopUsers(topUsers)
+        setBlockedUsers(blockedUsers)
+
+    }, [])
 
     return (
         <>
