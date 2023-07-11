@@ -6,7 +6,7 @@ import Navigation from './Navigation';
 import Drawer from './Drawer';
 
 export default function Header() {
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
     function toggleDrawer() {
         setIsOpen(!isOpen)
     }
