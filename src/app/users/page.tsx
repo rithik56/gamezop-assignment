@@ -13,8 +13,8 @@ async function getData() {
 export default async function Users() {
   const users = await getData()
   return (
-    <main className={styles.main}>
+    <div>
       <UserTable users={users} />
-    </main>
+    </div>
   )
 }
