@@ -15,8 +15,12 @@ interface Props {
 export default function UserTable({ users }: Props) {
 
     const [topUsers, setTopUsers] = useState(() => {
+
+        if (typeof window == 'undefined') return null
+
         // Fetching the top users from the local storage
         let topUsersKey = localStorage.getItem('top_users')
+
         // checking if top_users exists
         if (topUsersKey) {
             // returning the top_users mao from local storage
@@ -29,8 +33,12 @@ export default function UserTable({ users }: Props) {
     })
 
     const [blockedUsers, setBlockedUsers] = useState(() => {
+
+        if (typeof window == 'undefined') return null
+
         // Fetching the blocked users from the local storage
         let blockedUsersKey = localStorage.getItem('blocked_users')
+
         // checking if blocked_users exists
         if (blockedUsersKey) {
             // returning the blocked_users map from local storage
