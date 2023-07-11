@@ -13,9 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Header />
-        <main className={styles.main}>
+        <div className={styles.div}>
           {children}
-        </main>
+        </div>
       </body>
     </html>
   )

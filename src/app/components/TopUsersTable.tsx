@@ -55,44 +55,47 @@ export default function TopUsersTable() {
     }, [])
     return (
         <>
-            <SearchBar
-                category={category}
-                query={query}
-                filterUserHandler={(category, query) => filterDataHandler(category, query)}
-                filteredUsers={filteredUsers}
-                updateShowUserHandler={(showUser: boolean, userDetails: usersType) => {
-                    setShowUserDetails({
-                        showUser: showUser,
-                        userDetails: userDetails
-                    })
-                    setQuery('')
-                }}
-            />
-            {!showUserDetails.showUser ? <table className={styles.table}>
-                <tbody>
-                    <tr className={`${styles.tr} ${styles.header_row}`} key={0}>
-                        <th className={styles.th}>Name</th>
-                        <th className={styles.th}>Email</th>
-                    </tr>
-                    {topUsers && topUsers.map((user: usersType) => {
-                        return (
-                            <tr className={styles.tr} key={user.id}>
-                                <td className={styles.td}>{user.name}</td>
-                                <td className={styles.td}>{user.email}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table> : showUserDetails.userDetails &&
-            <UserDetails
-                user={showUserDetails.userDetails}
-                updateShowUserDetailsHandler={() => {
-                    setShowUserDetails({
-                        showUser: false,
-                        userDetails: null
-                    })
-                }}
-            />}
+            <h1 className={styles.table_heading}>Top Users</h1>
+            <div className={styles.table_container}>
+                <SearchBar
+                    category={category}
+                    query={query}
+                    filterUserHandler={(category, query) => filterDataHandler(category, query)}
+                    filteredUsers={filteredUsers}
+                    updateShowUserHandler={(showUser: boolean, userDetails: usersType) => {
+                        setShowUserDetails({
+                            showUser: showUser,
+                            userDetails: userDetails
+                        })
+                        setQuery('')
+                    }}
+                />
+                {!showUserDetails.showUser ? <table className={styles.table}>
+                    <tbody>
+                        <tr className={`${styles.tr} ${styles.header_row}`} key={0}>
+                            <th className={styles.th}>Name</th>
+                            <th className={styles.th}>Email</th>
+                        </tr>
+                        {topUsers && topUsers.map((user: usersType) => {
+                            return (
+                                <tr className={styles.tr} key={user.id}>
+                                    <td className={styles.td}>{user.name}</td>
+                                    <td className={styles.td}>{user.email}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table> : showUserDetails.userDetails &&
+                <UserDetails
+                    user={showUserDetails.userDetails}
+                    updateShowUserDetailsHandler={() => {
+                        setShowUserDetails({
+                            showUser: false,
+                            userDetails: null
+                        })
+                    }}
+                />}
+            </div>
         </>
     )
 }

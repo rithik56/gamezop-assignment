@@ -159,85 +159,88 @@ export default function UserTable({ users }: Props) {
 
     return (
         <>
-            {/* Checking if filteredUsers exists */}
-            {users && <>
-                <div className={`display-flex`}>
+            <h1 className={styles.table_heading}>Users</h1>
+            <div className={styles.table_container}>
+                <SearchBar
+                    category={category}
+                    query={query}
+                    filterUserHandler={(category, query) => filterDataHandler(category, query)}
+                    filteredUsers={filteredUsers}
+                    updateShowUserHandler={(showUser: boolean, userDetails: usersType) => {
+                        setShowUserDetails({
+                            showUser: showUser,
+                            userDetails: userDetails
+                        })
+                        setQuery('')
+                    }}
+                />
+                {/* Checking if filteredUsers exists */}
+                {users && <>
                     {/* Passing the values of category and query as props to searchbar component along with their respective updateHandler functions */}
-                    <SearchBar
-                        category={category}
-                        query={query}
-                        filterUserHandler={(category, query) => filterDataHandler(category, query)}
-                        filteredUsers={filteredUsers}
-                        updateShowUserHandler={(showUser: boolean, userDetails: usersType) => {
-                            setShowUserDetails({
-                                showUser: showUser,
-                                userDetails: userDetails
-                            })
-                            setQuery('')
-                        }}
-                    />
-                </div>
-                {!showUserDetails.showUser ? <table className={styles.table}>
-                    <tbody>
-                        <tr className={`${styles.tr} ${styles.header_row}`} key={0}>
-                            <th className={styles.th}>Name</th>
-                            <th className={styles.th}>Email</th>
-                            <th className={styles.th}>Blocked</th>
-                            <th className={styles.th}>Top User</th>
-                        </tr>
-                        {users.map((user) => {
-                            return (
-                                <tr className={styles.tr} key={user.id}>
-                                    <td className={styles.td}>{user.name}</td>
-                                    <td className={styles.td}>{user.email}</td>
-                                    <td className={styles.td}>
-                                        <label className={styles.switch}>
+
+                    {!showUserDetails.showUser ? <table className={styles.table}>
+                        <tbody>
+                            <tr className={`${styles.tr} ${styles.header_row}`} key={0}>
+                                <th className={styles.th}>Name</th>
+                                <th className={styles.th}>Email</th>
+                                <th className={styles.th}>Blocked</th>
+                                <th className={styles.th}>Top User</th>
+                            </tr>
+                            {users.map((user) => {
+                                return (
+                                    <tr className={styles.tr} key={user.id}>
+                                        <td className={styles.td}>{user.name}</td>
+                                        <td className={styles.td}>{user.email}</td>
+                                        <td className={styles.td}>
+                                            <label className={styles.switch}>
+                                                <input
+                                                    className={styles.switch_input}
+                                                    type="checkbox"
+                                                    checked={(blockedUsers && (blockedUsers.hasOwnProperty(user.id))) ? true : false}
+                                                    onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                            blockUser(user.id)
+                                                        }
+                                                        else {
+                                                            unblockUser(user.id)
+                                                        }
+                                                    }}
+                                                />
+                                                <span className={styles.slider}></span>
+                                            </label>
+                                        </td>
+                                        <td className={styles.td}>
                                             <input
-                                                className={styles.switch_input}
-                                                type="checkbox"
-                                                checked={(blockedUsers && (blockedUsers.hasOwnProperty(user.id))) ? true : false}
+                                                type='checkbox'
+                                                className={styles.checkbox}
+                                                checked={(topUsers && topUsers.hasOwnProperty(user.id)) ? true : false}
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        blockUser(user.id)
+                                                        addTopUser(user.id, user)
                                                     }
                                                     else {
-                                                        unblockUser(user.id)
+                                                        removeTopUser(user.id)
                                                     }
                                                 }}
                                             />
-                                            <span className={styles.slider}></span>
-                                        </label>
-                                    </td>
-                                    <td className={styles.td}>
-                                        <input
-                                            type='checkbox'
-                                            className={styles.checkbox}
-                                            checked={(topUsers && topUsers.hasOwnProperty(user.id)) ? true : false}
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    addTopUser(user.id, user)
-                                                }
-                                                else {
-                                                    removeTopUser(user.id)
-                                                }
-                                            }}
-                                        />
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table> : showUserDetails.userDetails &&
-                <UserDetails
-                    user={showUserDetails.userDetails}
-                    updateShowUserDetailsHandler={() => {
-                        setShowUserDetails({
-                            showUser: false,
-                            userDetails: null
-                        })
-                    }}
-                />}
-            </>}
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table> : showUserDetails.userDetails &&
+                    <UserDetails
+                        user={showUserDetails.userDetails}
+                        updateShowUserDetailsHandler={() => {
+                            setShowUserDetails({
+                                showUser: false,
+                                userDetails: null
+                            })
+                        }}
+                    />}
+                </>}
+            </div>
         </>
+
     )
 }
