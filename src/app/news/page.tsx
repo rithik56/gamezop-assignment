@@ -20,10 +20,14 @@ async function getData() {
 export default async function News() {
     const news = await getData();
     return (
-        <main className={styles.main}>
-            {news.map((item: newsType) => {
-                return <NewsCard news={item} key={item.id} />
-            })}
-        </main>
+        <>
+            <h1 style={{ marginBottom: '20px' }}>News</h1>
+            <main className={styles.main}>
+
+                {news.map((item: newsType) => {
+                    return <NewsCard news={item} key={item.id} />
+                })}
+            </main>
+        </>
     )
 }

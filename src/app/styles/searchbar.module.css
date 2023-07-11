@@ -1,26 +1,27 @@
 .searchbar_container {
   display: flex;
-  margin-bottom: 20px;
   position: absolute;
   z-index: 1;
   width: 100%;
 }
 
 .searchbar {
-  height: 20px;
   padding: 8px;
   border: none;
   border-radius: 16px;
   box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
+  box-sizing: border-box;
+  width: 100%;
+  height: 38px;
 }
 
 .select {
-  width: 10%;
   margin-right: 4px;
   background-color: #5b9ad5;
   color: white;
   border: none;
   height: 38px;
+  padding: 4px;
 }
 
 .icon_rtl {
@@ -30,7 +31,5 @@
 }
 
 .search_results_container {
-  flex-grow: 5;
-  display: flex;
-  flex-direction: column;
+  flex-grow: 2;
 }

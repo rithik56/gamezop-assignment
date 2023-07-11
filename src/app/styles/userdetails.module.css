@@ -1,7 +1,6 @@
 .user_details_container {
   position: absolute;
   top: 100px;
-  display: flex;
   background-color: white;
   box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
   border-radius: 16px;
@@ -9,13 +8,19 @@
 }
 
 .user_details_section {
-  display: flex;
   padding: 16px;
   row-gap: 25px;
   column-gap: 25px;
+  display: flex;
   justify-content: space-between;
   flex-direction: column;
   align-items: flex-start;
+}
+
+@media (min-width: 575px) {
+  .user_details_container {
+    display: flex;
+  }
 }
 
 .back_button {
