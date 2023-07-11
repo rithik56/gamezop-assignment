@@ -6,6 +6,7 @@ import { useState } from 'react'
 import UserDetails from './UserDetails'
 
 export default function TopUsersTable() {
+    if (typeof window == 'undefined') return null
     const topUsersKey = localStorage.getItem('top_users')
     let users: usersType[] | null = null
     if (topUsersKey) {
