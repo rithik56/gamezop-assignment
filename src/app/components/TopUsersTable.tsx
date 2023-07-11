@@ -78,7 +78,16 @@ export default function TopUsersTable() {
                         )
                     })}
                 </tbody>
-            </table> : showUserDetails.userDetails && <UserDetails user={showUserDetails.userDetails} />}
+            </table> : showUserDetails.userDetails &&
+            <UserDetails
+                user={showUserDetails.userDetails}
+                updateShowUserDetailsHandler={() => {
+                    setShowUserDetails({
+                        showUser: false,
+                        userDetails: null
+                    })
+                }}
+            />}
         </>
     )
 }

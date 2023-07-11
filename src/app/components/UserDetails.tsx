@@ -1,6 +1,6 @@
 import styles from '../styles/userdetails.module.css'
 
-export default function UserDetails({ user }: { user: usersType }) {
+export default function UserDetails({ user, updateShowUserDetailsHandler }: { user: usersType, updateShowUserDetailsHandler: () => void }) {
     const { id, name, username, email, address, phone, website, company } = user
     const { street, suite, city, zipcode, geo } = address
     const { lat, lng } = geo
@@ -61,6 +61,12 @@ export default function UserDetails({ user }: { user: usersType }) {
                     </span>
                 </div>
             </div>}
+            <button
+                className={styles.back_button}
+                onClick={() => updateShowUserDetailsHandler()}
+            >
+                Back To All Users
+            </button>
         </>
     )
 }
