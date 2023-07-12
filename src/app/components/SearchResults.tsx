@@ -8,13 +8,17 @@ interface Props {
 }
 
 export default function SearchResults({ filteredUsers, category, query, updateShowUserHandler }: Props) {
+    console.log(filteredUsers)
     return (
         <div className={`${styles.search_results} ${query !== '' ? styles.search_results_active : ''}`}>
-            {filteredUsers && filteredUsers.map((user) => {
+            {filteredUsers && filteredUsers.length !== 0 && filteredUsers.map((user) => {
                 return (
                     <h3 key={user.id} className={styles.search_results_heading} onClick={() => updateShowUserHandler(true, user)}>{user[category]}</h3>
                 )
             })}
+            {(!filteredUsers || filteredUsers && filteredUsers.length === 0) &&
+                <h3 className={styles.search_results_heading}>No Results...</h3>
+            }
         </div>
     )
 }
