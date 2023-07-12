@@ -9,7 +9,7 @@
 }
 
 .drawer_item_selected {
-  /* background-color: #ff7400; */
+  font-weight: 600;
 }
 
 .drawer_item {
@@ -17,6 +17,7 @@
   justify-content: center;
   padding: 24px 16px;
   align-items: center;
+  font-weight: 400;
 }
 
 .h4 {
