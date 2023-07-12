@@ -84,6 +84,8 @@ export default function TopUsersTable() {
                                 </tr>
                             )
                         })}
+                        {!topUsers && <tr className={styles.tr} key={1}><td className={styles.td} colSpan={2}>No Data...</td></tr>}
+                        {topUsers && Object.keys(topUsers).length === 0 && <tr className={styles.tr} key={1}><td className={styles.td} colSpan={2}>No Data...</td></tr>}
                     </tbody>
                 </table> : showUserDetails.userDetails &&
                 <UserDetails
